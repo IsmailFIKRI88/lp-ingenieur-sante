@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Génie en Technologie Médicale & Industrie Pharmaceutique — UM6SS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#030712;--surface:#0a0f1a;--surface2:#111827;--border:#1f2937;
+      --text:#f9fafb;--muted:#9ca3af;--muted2:#6b7280;
+      --primary:#06b6d4;--primary-glow:#0891b230;
+      --accent:#8b5cf6;--green:#10b981;--orange:#f59e0b;--red:#ef4444;
+      --gradient:linear-gradient(135deg,#06b6d4,#8b5cf6);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    
+    .bg-grid{
+      position:fixed;inset:0;z-index:-1;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%,#06b6d412,transparent),
+        radial-gradient(ellipse 60% 40% at 100% 0%,#8b5cf610,transparent),
+        radial-gradient(ellipse 50% 30% at 0% 100%,#10b98108,transparent);
+    }
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    
+    /* Urgency Banner */
+    .urgency-banner{
+      background:linear-gradient(90deg,#7c3aed,#06b6d4);
+      padding:12px 20px;text-align:center;font-size:14px;font-weight:600;
+      position:relative;overflow:hidden;
+    }
+    .urgency-banner::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(90deg,transparent,#ffffff20,transparent);
+      animation:shimmer 2s infinite;
+    }
+    @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+    .urgency-banner span{color:#fde047}
+    
+    /* Nav */
+    nav{
+      position:sticky;top:0;z-index:100;
+      backdrop-filter:blur(20px);background:rgba(3,7,18,.85);
+      border-bottom:1px solid var(--border);
+    }
+    nav .container{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;gap:16px;flex-wrap:wrap}
+    .logo{font-weight:800;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .logo span{display:block;font-size:11px;font-weight:500;-webkit-text-fill-color:var(--muted)}
+    .nav-links{display:flex;gap:6px;align-items:center}
+    .nav-links a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;font-size:13px;transition:.2s}
+    .nav-links a:hover{color:var(--text);background:#ffffff08}
+    
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 20px;border-radius:10px;font-weight:600;font-size:14px;
+      text-decoration:none;transition:all .2s;border:none;cursor:pointer;
+    }
+    .btn-primary{background:var(--gradient);color:#fff;box-shadow:0 0 30px var(--primary-glow)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px var(--primary-glow)}
+    .btn-whatsapp{background:#25d366;color:#fff}
+    .btn-whatsapp:hover{background:#20bd5a;transform:translateY(-2px)}
+    .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{border-color:var(--primary)}
+    .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+    .btn-sm{padding:8px 14px;font-size:13px}
+    
+    /* Hero */
+    .hero{padding:60px 0 40px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 14px;background:var(--surface2);border:1px solid var(--border);
+      border-radius:100px;font-size:12px;color:var(--muted);margin-bottom:20px;
+    }
+    .badge-live{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .hero h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.08;margin-bottom:16px}
+    .hero h1 span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero>div>p{font-size:17px;color:var(--muted);margin-bottom:24px;max-width:520px}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+    .hero-proof{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+    .hero-proof div{display:flex;align-items:center;gap:6px}
+    .hero-proof strong{color:var(--text)}
+    
+    /* Stats bar */
+    .stats-bar{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+      background:var(--border);border-radius:16px;overflow:hidden;margin:40px 0;
+    }
+    .stat{background:var(--surface);padding:24px;text-align:center}
+    .stat-value{font-size:32px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+    
+    /* Eligibility Test */
+    .test-card{
+      background:var(--surface);border:1px solid var(--border);border-radius:20px;
+      padding:28px;position:relative;overflow:hidden;
+    }
+    .test-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);
+    }
+    .test-card h3{font-size:18px;margin-bottom:6px}
+    .test-card>p{font-size:13px;color:var(--muted);margin-bottom:20px}
+    .test-step{margin-bottom:16px}
+    .test-step label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
+    .test-step select{
+      width:100%;padding:12px;background:var(--bg);border:1px solid var(--border);
+      border-radius:10px;color:var(--text);font-size:14px;cursor:pointer;
+    }
+    .test-step select:focus{outline:none;border-color:var(--primary)}
+    .test-result{
+      display:none;padding:16px;border-radius:12px;margin-top:16px;
+      background:linear-gradient(135deg,#10b98120,#06b6d420);border:1px solid #10b98140;
+    }
+    .test-result.show{display:block}
+    .test-result h4{color:var(--green);font-size:15px;margin-bottom:4px}
+    .test-result p{font-size:13px;color:var(--muted)}
+    
+    /* Section */
+    .section{padding:70px 0}
+    .section-label{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;font-weight:600;color:var(--primary);
+      text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+    }
+    .section-title{font-size:clamp(26px,4vw,36px);font-weight:800;margin-bottom:12px}
+    .section-sub{color:var(--muted);margin-bottom:36px;max-width:560px;font-size:16px}
+    
+    /* Problem/Solution */
+    .problem-box{
+      background:linear-gradient(135deg,#ef444410,#f59e0b10);
+      border:1px solid #f59e0b30;border-radius:16px;padding:24px;margin-bottom:24px;
+    }
+    .problem-box h3{color:var(--orange);font-size:16px;margin-bottom:8px}
+    .problem-box p{color:var(--muted);font-size:14px}
+    
+    /* Cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .card{
+      background:var(--surface);border:1px solid var(--border);border-radius:16px;
+      padding:24px;transition:all .3s;position:relative;
+    }
+    .card:hover{border-color:#374151;transform:translateY(-3px)}
+    .card-icon{font-size:28px;margin-bottom:12px}
+    .card h3{font-size:16px;font-weight:700;margin-bottom:6px}
+    .card p{color:var(--muted);font-size:14px}
+    .card-tag{
+      position:absolute;top:16px;right:16px;
+      padding:4px 10px;background:var(--primary);border-radius:6px;
+      font-size:11px;font-weight:600;
+    }
+    
+    /* Comparison */
+    .comparison{
+      display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;
+      margin:40px 0;
+    }
+    .compare-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+    .compare-box h4{font-size:14px;margin-bottom:12px}
+    .compare-box ul{list-style:none;font-size:13px;color:var(--muted)}
+    .compare-box ul li{padding:6px 0;display:flex;align-items:center;gap:8px}
+    .compare-box.highlight{border-color:var(--primary);background:linear-gradient(135deg,#06b6d408,#8b5cf608)}
+    .compare-box.highlight h4{color:var(--primary)}
+    .vs{
+      width:48px;height:48px;background:var(--gradient);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;
+    }
+    
+    /* Partners */
+    .partners{display:flex;gap:16px;flex-wrap:wrap;margin:24px 0}
+    .partner{
+      padding:12px 20px;background:var(--surface);border:1px solid var(--border);
+      border-radius:10px;font-size:13px;font-weight:600;
+    }
+    
+    /* Testimonials */
+    .testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+    .testimonial{
+      background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;
+    }
+    .testimonial-quote{font-size:15px;color:var(--text);margin-bottom:16px;font-style:italic}
+    .testimonial-author{display:flex;align-items:center;gap:12px}
+    .testimonial-avatar{
+      width:40px;height:40px;background:var(--gradient);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;
+    }
+    .testimonial-name{font-size:14px;font-weight:600}
+    .testimonial-role{font-size:12px;color:var(--muted)}
+    .testimonial-tag{
+      display:inline-block;padding:3px 8px;background:var(--surface2);
+      border-radius:4px;font-size:11px;color:var(--primary);margin-top:4px;
+    }
+    
+    /* Recruiters */
+    .recruiters{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+    .recruiter{
+      padding:10px 16px;background:var(--surface2);border:1px solid var(--border);
+      border-radius:8px;font-size:13px;display:flex;align-items:center;gap:8px;
+    }
+    
+    /* Career Path */
+    .career-path{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:30px 0;
+    }
+    .career-step{
+      background:var(--surface);border:1px solid var(--border);border-radius:14px;
+      padding:20px;text-align:center;position:relative;
+    }
+    .career-step::after{
+      content:'→';position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+      color:var(--muted);font-size:20px;
+    }
+    .career-step:last-child::after{display:none}
+    .career-step h4{font-size:15px;margin-bottom:4px}
+    .career-step p{font-size:12px;color:var(--muted)}
+    .career-step .salary{
+      margin-top:10px;padding:6px 12px;background:var(--surface2);border-radius:6px;
+      font-size:13px;color:var(--green);font-weight:600;display:inline-block;
+    }
+    
+    /* Admission Steps */
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:30px 0}
+    .step{
+      background:var(--surface);border:1px solid var(--border);border-radius:14px;
+      padding:20px;text-align:center;position:relative;
+    }
+    .step-num{
+      width:32px;height:32px;background:var(--gradient);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:14px;margin:0 auto 12px;
+    }
+    .step h4{font-size:14px;margin-bottom:4px}
+    .step p{font-size:12px;color:var(--muted)}
+    
+    /* Pricing */
+    .pricing-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+    .pricing-card{
+      background:var(--surface);border:1px solid var(--border);border-radius:20px;
+      padding:32px;position:relative;overflow:hidden;
+    }
+    .pricing-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);
+    }
+    .pricing-card h3{font-size:18px;margin-bottom:16px}
+    .price{font-size:42px;font-weight:900}
+    .price span{font-size:16px;color:var(--muted);font-weight:400}
+    .price-note{font-size:13px;color:var(--green);margin:8px 0 20px;display:flex;align-items:center;gap:6px}
+    .pricing-includes{margin:20px 0}
+    .pricing-includes li{
+      list-style:none;padding:8px 0;font-size:14px;color:var(--muted);
+      display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);
+    }
+    .pricing-includes li:last-child{border:none}
+    .pricing-includes li::before{content:'✓';color:var(--green);font-weight:bold}
+    
+    /* ROI Calculator */
+    .roi-card{
+      background:linear-gradient(135deg,#06b6d408,#8b5cf408);
+      border:1px solid var(--border);border-radius:20px;padding:32px;
+    }
+    .roi-card h3{font-size:18px;margin-bottom:20px}
+    .roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .roi-item{
+      background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;
+    }
+    .roi-item label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+    .roi-item .value{font-size:24px;font-weight:800;color:var(--green)}
+    .roi-item .value.highlight{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    
+    /* Events */
+    .events{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:30px 0}
+    .event{
+      background:var(--surface);border:1px solid var(--border);border-radius:14px;
+      padding:20px;
+    }
+    .event-date{
+      display:inline-block;padding:6px 12px;background:var(--surface2);
+      border-radius:8px;font-size:13px;font-weight:600;color:var(--primary);margin-bottom:12px;
+    }
+    .event h4{font-size:15px;margin-bottom:4px}
+    .event p{font-size:13px;color:var(--muted);margin-bottom:12px}
+    
+    /* Form */
+    .form-section{
+      background:var(--surface);border:1px solid var(--border);border-radius:24px;
+      padding:40px;margin:50px 0;
+    }
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+    .form-content h2{font-size:28px;font-weight:800;margin-bottom:12px}
+    .form-content p{color:var(--muted);margin-bottom:20px}
+    .form-benefits{list-style:none}
+    .form-benefits li{padding:8px 0;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:10px}
+    .form-benefits li::before{content:'✓';color:var(--green);font-weight:bold}
+    form{display:flex;flex-direction:column;gap:14px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{font-size:12px;color:var(--muted);margin-bottom:4px;display:block}
+    input,select{
+      width:100%;padding:14px;background:var(--bg);border:1px solid var(--border);
+      border-radius:10px;color:var(--text);font-size:14px;
+    }
+    input:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+    input::placeholder{color:#4b5563}
+    .form-footer{display:flex;gap:12px;margin-top:8px}
+    
+    /* Footer */
+    footer{
+      border-top:1px solid var(--border);padding:40px 0;margin-top:40px;
+    }
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px}
+    .footer-brand{font-size:14px;color:var(--muted)}
+    .footer-brand strong{color:var(--text);font-size:16px;display:block;margin-bottom:8px}
+    .footer-links h4{font-size:13px;margin-bottom:12px;color:var(--text)}
+    .footer-links a{display:block;font-size:13px;color:var(--muted);text-decoration:none;padding:4px 0}
+    .footer-links a:hover{color:var(--text)}
+    .footer-bottom{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-top:30px;padding-top:20px;border-top:1px solid var(--border);
+      font-size:12px;color:var(--muted2);
+    }
+    
+    /* Responsive */
+    @media(max-width:900px){
+      .hero-grid,.form-grid,.pricing-section,.footer-grid{grid-template-columns:1fr}
+      .stats-bar{grid-template-columns:repeat(2,1fr)}
+      .comparison{grid-template-columns:1fr;text-align:center}
+      .vs{margin:10px auto}
+      .career-path,.steps,.events{grid-template-columns:1fr}
+      .career-step::after{display:none}
+      .nav-links a:not(.btn){display:none}
+    }
+    @media(max-width:600px){
+      .form-row,.roi-grid{grid-template-columns:1fr}
+      .hero-cta{flex-direction:column}
+      .hero-cta .btn{width:100%;justify-content:center}
+    }
+    
+    /* WhatsApp Float */
+    .whatsapp-float{
+      position:fixed;bottom:24px;right:24px;z-index:1000;
+      background:#25d366;color:#fff;padding:14px 20px;border-radius:50px;
+      text-decoration:none;font-weight:600;font-size:14px;
+      display:flex;align-items:center;gap:10px;
+      box-shadow:0 4px 20px rgba(37,211,102,.4);
+      transition:transform .2s;
+    }
+    .whatsapp-float:hover{transform:scale(1.05)}
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  
+  <!-- Urgency Banner -->
+  <div class="urgency-banner">
+    🎓 Rentrée 2025-2026 — Inscriptions ouvertes • <span>Places limitées à 60 étudiants</span> — 
+    <a href="#form" style="color:#fff;text-decoration:underline;margin-left:8px">Vérifier mon éligibilité →</a>
+  </div>
+  
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <div class="logo">UM6SS Engineering<span>Collège d'Ingénierie</span></div>
+      <div class="nav-links">
+        <a href="#programme">Programme</a>
+        <a href="#debouches">Débouchés</a>
+        <a href="#admission">Admission</a>
+        <a href="#frais">Frais</a>
+        <a href="https://wa.me/212600000000" class="btn btn-whatsapp btn-sm">💬 WhatsApp</a>
+        <a href="#form" class="btn btn-primary btn-sm">Brochure</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="badge">
+            <span class="badge-live"></span>
+            Formation en <strong>5 ans</strong> • Français • Admission sur dossier + test
+          </div>
+          <h1>Devenez <span>Ingénieur</span> dans les industries de la santé</h1>
+          <p><strong>Génie en Technologie Médicale & Industrie Pharmaceutique et Cosmétique</strong> — un cursus 100% orienté industrie pour maîtriser procédés, production, qualité et systèmes.</p>
+          <div class="hero-cta">
+            <a href="#form" class="btn btn-primary">Télécharger la brochure →</a>
+            <a href="https://wa.me/212600000000" class="btn btn-whatsapp">💬 Parler à un conseiller</a>
+            <a href="#test" class="btn btn-ghost">Tester mon éligibilité</a>
+          </div>
+          <div class="hero-proof">
+            <div>✓ <strong>3x</strong> plus de pratique</div>
+            <div>✓ <strong>+50</strong> équipements réels</div>
+            <div>✓ Réponse <strong>&lt;24h</strong></div>
+          </div>
+        </div>
+        
+        <!-- Eligibility Test -->
+        <div class="test-card" id="test">
+          <h3>🎯 Test d'éligibilité rapide</h3>
+          <p>Réponds à 3 questions pour savoir si la filière est faite pour toi.</p>
+          <div class="test-step">
+            <label>Ton niveau actuel</label>
+            <select id="q1">
+              <option value="">Choisir...</option>
+              <option value="bac">Bac scientifique/technique</option>
+              <option value="bac1">Bac+1</option>
+              <option value="bac2">Bac+2 (CNC/DEUG/DUT/BTS)</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="test-step">
+            <label>Tu préfères</label>
+            <select id="q2">
+              <option value="">Choisir...</option>
+              <option value="pratique">La pratique et le terrain</option>
+              <option value="theorie">La théorie et la recherche</option>
+              <option value="mix">Un mix des deux</option>
+            </select>
+          </div>
+          <div class="test-step">
+            <label>Ton objectif</label>
+            <select id="q3">
+              <option value="">Choisir...</option>
+              <option value="emploi">Trouver un emploi rapidement</option>
+              <option value="entrepreneur">Créer mon entreprise</option>
+              <option value="recherche">Faire de la recherche</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showResult()">Voir le résultat</button>
+          <div class="test-result" id="testResult">
+            <h4>✓ Profil compatible !</h4>
+            <p>Tu corresponds au profil recherché. Télécharge la brochure pour découvrir les prochaines étapes.</p>
+            <a href="#form" class="btn btn-primary btn-sm" style="margin-top:12px">Recevoir la brochure →</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat"><div class="stat-value">60</div><div class="stat-label">Places limitées/an</div></div>
+        <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Orienté pratique</div></div>
+        <div class="stat"><div class="stat-value">+50</div><div class="stat-label">Équipements réels</div></div>
+        <div class="stat"><div class="stat-value">7</div><div class="stat-label">Campus au Maroc</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Problem/Why -->
+    <section id="programme" class="section">
+      <div class="container">
+        <span class="section-label">📌 Le constat</span>
+        <h2 class="section-title">La santé recrute… mais manque d'ingénieurs terrain</h2>
+        
+        <div class="problem-box">
+          <h3>⚠️ Un besoin concret, maintenant</h3>
+          <p>Les systèmes hospitaliers se modernisent (imagerie, dispositifs, data, maintenance), mais les profils hybrides santé + ingénierie restent rares. Résultat : forte employabilité sur des métiers critiques, au Maroc et à l'international.</p>
+        </div>
+        
+        <p class="section-sub">Cette formation répond aux enjeux de qualité des soins, disponibilité du matériel et innovation biomédicale.</p>
+        
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <span class="card-tag">Secteur en tension</span>
+            <h3>Technologie & Procédés</h3>
+            <p>Comprendre, piloter et optimiser les procédés industriels pharmaceutiques et cosmétiques.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏭</div>
+            <h3>Production & Maintenance</h3>
+            <p>Assurer la disponibilité et la performance des équipements hospitaliers et industriels.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">✓</div>
+            <h3>Qualité & Validation</h3>
+            <p>Contrôle qualité, assurance qualité et validation dans des secteurs réglementés.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">💻</div>
+            <h3>Systèmes & Data</h3>
+            <p>Exploiter la donnée et les SI pour optimiser soins et opérations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Differentiators -->
+    <section class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+      <div class="container">
+        <span class="section-label">🎯 Différenciateurs</span>
+        <h2 class="section-title">Une formation conçue pour l'employabilité</h2>
+        <p class="section-sub">Des terrains d'application, des équipements réels, et des projets concrets dès la 1ère année.</p>
+        
+        <!-- Comparison -->
+        <div class="comparison">
+          <div class="compare-box">
+            <h4>❌ Technicien</h4>
+            <ul>
+              <li>Exécute des procédures</li>
+              <li>Suit les instructions</li>
+              <li>Maintenance basique</li>
+              <li>Évolution limitée</li>
+            </ul>
+          </div>
+          <div class="vs">VS</div>
+          <div class="compare-box highlight">
+            <h4>✓ Ingénieur (cette formation)</h4>
+            <ul>
+              <li>Conçoit et pilote</li>
+              <li>Optimise les processus</li>
+              <li>Gère des projets</li>
+              <li>Évolue vers le management</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="cards" style="margin-top:30px">
+          <div class="card">
+            <div class="card-icon">🏥</div>
+            <h3>Matériel hospitalier dernier cri</h3>
+            <p>Les étudiants s'entraînent sur du vrai matériel biomédical utilisé sur le terrain.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔬</div>
+            <h3>Centre d'expérimentation unique</h3>
+            <p>Un environnement technique qui permet de produire des projets réels et applicables.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <h3>Projets concrets dès la 1ère année</h3>
+            <p>Pas d'attente : immersion pratique et cas réels dès le début du cursus.</p>
+          </div>
+        </div>
+        
+        <!-- Partners -->
+        <h3 style="margin-top:40px;font-size:16px">Nos partenaires terrain</h3>
+        <div class="partners">
+          <div class="partner">🏥 Hôpitaux UM6SS</div>
+          <div class="partner">🔬 Labs & R&D</div>
+          <div class="partner">🏭 Industrie Pharma</div>
+          <div class="partner">💊 Dispositifs Médicaux</div>
+          <div class="partner">🚀 HealthTech</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="section">
+      <div class="container">
+        <span class="section-label">💬 Témoignages</span>
+        <h2 class="section-title">Ce qu'ils en disent</h2>
+        
+        <div class="testimonials">
+          <div class="testimonial">
+            <p class="testimonial-quote">"Une formation qui prépare vraiment au terrain, avec du matériel concret et des cas réels. J'ai trouvé un stage dès le 1er semestre."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">S</div>
+              <div>
+                <div class="testimonial-name">Sara M.</div>
+                <div class="testimonial-role">Étudiante, Promo 2024</div>
+                <span class="testimonial-tag">Pratique</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial">
+            <p class="testimonial-quote">"Le lien avec l'hôpital est un vrai plus : on voit les réalités du métier. Les étudiants arrivent préparés."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">K</div>
+              <div>
+                <div class="testimonial-name">Dr. Khalid B.</div>
+                <div class="testimonial-role">Encadrant, Stage hospitalier</div>
+                <span class="testimonial-tag">Stage</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial">
+            <p class="testimonial-quote">"On apprend à diagnostiquer, maintenir et améliorer les équipements biomédicaux. C'est exactement ce que les recruteurs cherchent."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">A</div>
+              <div>
+                <div class="testimonial-name">Amine R.</div>
+                <div class="testimonial-role">Diplômé, maintenant chez Pharma5</div>
+                <span class="testimonial-tag">Emploi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Débouchés -->
+    <section id="debouches" class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+      <div class="container">
+        <span class="section-label">🎯 Débouchés</span>
+        <h2 class="section-title">Des métiers utiles, concrets et recherchés</h2>
+        <p class="section-sub">Une trajectoire claire vers des fonctions techniques et stratégiques dans la santé.</p>
+        
+        <!-- Recruiters -->
+        <h4 style="font-size:14px;margin-bottom:12px">Ils recrutent nos profils</h4>
+        <div class="recruiters">
+          <div class="recruiter">🏥 Hôpitaux</div>
+          <div class="recruiter">💊 Pharma</div>
+          <div class="recruiter">🧬 Biotech</div>
+          <div class="recruiter">🚀 HealthTech</div>
+          <div class="recruiter">🔬 Laboratoires</div>
+          <div class="recruiter">🏭 Industrie cosmétique</div>
+        </div>
+        
+        <div class="cards" style="margin-top:30px">
+          <div class="card"><div class="card-icon">🏭</div><h3>Ingénieur Production</h3><p>Pharmaceutique, cosmétique, dispositifs médicaux</p></div>
+          <div class="card"><div class="card-icon">🔧</div><h3>Ingénieur Biomédical</h3><p>Gestion et optimisation du parc biomédical</p></div>
+          <div class="card"><div class="card-icon">📋</div><h3>Ingénieur Qualité</h3><p>Contrôle, assurance qualité, validation</p></div>
+          <div class="card"><div class="card-icon">📈</div><h3>Amélioration Continue</h3><p>Performance industrielle et optimisation</p></div>
+          <div class="card"><div class="card-icon">🛡️</div><h3>Ingénieur QHSE</h3><p>Qualité, hygiène, sécurité, environnement</p></div>
+          <div class="card"><div class="card-icon">💻</div><h3>Chef de projet HealthTech</h3><p>Déploiement solutions numériques santé</p></div>
+        </div>
+        
+        <!-- Career Path -->
+        <h3 style="margin-top:40px;font-size:18px">Évolution de carrière</h3>
+        <div class="career-path">
+          <div class="career-step">
+            <h4>Junior</h4>
+            <p>Technicité terrain</p>
+            <div class="salary">8 000 - 12 000 DH</div>
+          </div>
+          <div class="career-step">
+            <h4>Confirmé</h4>
+            <p>Pilotage, conformité</p>
+            <div class="salary">15 000 - 25 000 DH</div>
+          </div>
+          <div class="career-step">
+            <h4>Lead / Manager</h4>
+            <p>Stratégie biomédicale</p>
+            <div class="salary">30 000+ DH</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admission -->
+    <section id="admission" class="section">
+      <div class="container">
+        <span class="section-label">📝 Admission</span>
+        <h2 class="section-title">Rejoindre la filière</h2>
+        <p class="section-sub">Un processus clair, rapide, et orienté résultat. Places limitées à 60 étudiants.</p>
+        
+        <div class="cards">
+          <div class="card">
+            <h3>🎓 Post-bac</h3>
+            <p>Bac scientifique ou technique → Dossier + Test de pré-sélection + Entretien</p>
+          </div>
+          <div class="card">
+            <h3>🔄 Réorientation Bac+1/+2</h3>
+            <p>Équivalences possibles → Dossier + Entretien + Validation des acquis</p>
+          </div>
+          <div class="card">
+            <h3>🌍 International (Afrique)</h3>
+            <p>Dossier + Entretien en ligne + Accompagnement visa et arrivée</p>
+          </div>
+        </div>
+        
+        <h3 style="margin-top:40px;font-size:18px">Processus en 4 étapes</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h4>Candidature</h4>
+            <p>Soumission du dossier en ligne</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h4>Étude</h4>
+            <p>Analyse & pré-sélection</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h4>Entretien</h4>
+            <p>Motivation & projet</p>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <h4>Admission</h4>
+            <p>Confirmation & inscription</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="frais" class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+      <div class="container">
+        <span class="section-label">💰 Investissement</span>
+        <h2 class="section-title">Frais de scolarité</h2>
+        
+        <div class="pricing-section">
+          <div class="pricing-card">
+            <h3>Cycle Ingénieur — 5 ans</h3>
+            <div class="price">55 000 <span>DH / an</span></div>
+            <div class="price-note">✓ Paiement mensuel possible</div>
+            <ul class="pricing-includes">
+              <li>Cours & travaux pratiques</li>
+              <li>Accès aux plateformes et équipements</li>
+              <li>Accompagnement personnalisé</li>
+              <li>Stages en entreprise</li>
+              <li>Mentorat 1:1</li>
+            </ul>
+            <a href="#form" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:20px">Je candidate →</a>
+            <p style="font-size:12px;color:var(--muted);margin-top:12px;text-align:center">Des bourses peuvent être mobilisées selon dossier</p>
+          </div>
+          
+          <div class="roi-card">
+            <h3>📊 Estime ton retour sur investissement</h3>
+            <div class="roi-grid">
+              <div class="roi-item">
+                <label>Coût total (5 ans)</label>
+                <div class="value">275 000 DH</div>
+              </div>
+              <div class="roi-item">
+                <label>Salaire moyen 1ère année</label>
+                <div class="value">10 000 DH/mois</div>
+              </div>
+              <div class="roi-item">
+                <label>Temps de retour estimé</label>
+                <div class="value highlight">~2.5 ans</div>
+              </div>
+              <div class="roi-item">
+                <label>Économie vs école privée Paris</label>
+                <div class="value" style="color:var(--green)">-70%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events -->
+    <section class="section">
+      <div class="container">
+        <span class="section-label">📅 Événements</span>
+        <h2 class="section-title">Rencontre l'équipe et visite les installations</h2>
+        
+        <div class="events">
+          <div class="event">
+            <div class="event-date">📍 Janvier 2025</div>
+            <h4>Journée Portes Ouvertes</h4>
+            <p>Présentation + visite labo + échanges avec les étudiants.</p>
+            <a href="#form" class="btn btn-secondary btn-sm">S'inscrire</a>
+          </div>
+          <div class="event">
+            <div class="event-date">💻 Février 2025</div>
+            <h4>Webinaire Info</h4>
+            <p>Découvrir le programme en ligne, Q&A avec l'équipe.</p>
+            <a href="#form" class="btn btn-secondary btn-sm">S'inscrire</a>
+          </div>
+          <div class="event">
+            <div class="event-date">🔬 Mars 2025</div>
+            <h4>Atelier Pratique</h4>
+            <p>Démonstrations et mini-projet sur équipements réels.</p>
+            <a href="#form" class="btn btn-secondary btn-sm">S'inscrire</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Section -->
+    <section id="form">
+      <div class="container">
+        <div class="form-section">
+          <div class="form-grid">
+            <div class="form-content">
+              <h2>Reçois la brochure complète</h2>
+              <p>Programme détaillé, calendrier d'admission, débouchés et témoignages — tout en un document.</p>
+              <ul class="form-benefits">
+                <li>Brochure détaillée du programme</li>
+                <li>Calendrier et dates clés</li>
+                <li>Modalités d'admission par profil</li>
+                <li>Contact direct avec un conseiller</li>
+                <li>Réponse sous 24h garantie</li>
+              </ul>
+            </div>
+            <form action="#" method="post">
+              <div class="form-row">
+                <div><label>Prénom</label><input type="text" name="prenom" placeholder="Sara" required></div>
+                <div><label>Nom</label><input type="text" name="nom" placeholder="El Amrani" required></div>
+              </div>
+              <div><label>Email</label><input type="email" name="email" placeholder="exemple@email.com" required></div>
+              <div class="form-row">
+                <div><label>Téléphone (WhatsApp)</label><input type="tel" name="tel" placeholder="+212 6XX XXX XXX"></div>
+                <div><label>Niveau actuel</label>
+                  <select name="niveau" required>
+                    <option value="" disabled selected>Choisir...</option>
+                    <option>Post-bac</option>
+                    <option>Bac+1</option>
+                    <option>Bac+2 (CNC/DEUG/DUT/BTS)</option>
+                    <option>Autre</option>
+                  </select>
+                </div>
+              </div>
+              <div><label>Pays de résidence</label><input type="text" name="pays" placeholder="Maroc, Sénégal, Côte d'Ivoire..."></div>
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center">Envoyer & recevoir la brochure →</button>
+                <a href="https://wa.me/212600000000" class="btn btn-whatsapp">💬 WhatsApp</a>
+              </div>
+              <p style="font-size:11px;color:var(--muted2);margin-top:8px">En soumettant, vous acceptez notre politique de confidentialité.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <strong>UM6SS — Collège d'Ingénierie</strong>
+          Former les ingénieurs qui rendent la santé plus sûre, plus efficace et plus accessible.
+          <div style="margin-top:16px">
+            <a href="tel:+212600000000" class="btn btn-secondary btn-sm" style="margin-right:8px">📞 +212 6XX XX XX XX</a>
+            <a href="mailto:contact@um6ss.ma" class="btn btn-secondary btn-sm">✉️ contact@um6ss.ma</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Programme</h4>
+          <a href="#programme">Présentation</a>
+          <a href="#debouches">Débouchés</a>
+          <a href="#admission">Admission</a>
+          <a href="#frais">Frais</a>
+        </div>
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <a href="#form">Brochure</a>
+          <a href="https://wa.me/212600000000">WhatsApp</a>
+          <a href="#">Événements</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 UM6SS — Collège d'Ingénierie. Tous droits réservés.</span>
+        <span><a href="#" style="color:inherit">Mentions légales</a> • <a href="#" style="color:inherit">Confidentialité</a></span>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/212600000000" class="whatsapp-float" target="_blank">
+    💬 Une question ? WhatsApp
+  </a>
+
+  <script>
+    function showResult(){
+      const q1=document.getElementById('q1').value;
+      const q2=document.getElementById('q2').value;
+      const q3=document.getElementById('q3').value;
+      if(q1&&q2&&q3){
+        document.getElementById('testResult').classList.add('show');
+      }else{
+        alert('Réponds aux 3 questions pour voir le résultat.');
+      }
+    }
+  </script>
+</body>
+</html>
