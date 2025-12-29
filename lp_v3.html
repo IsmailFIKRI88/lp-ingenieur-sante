@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingénieur Santé — UM6SS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#ffffff;--surface:#f8fafc;--border:#e2e8f0;
+      --text:#0f172a;--muted:#64748b;
+      --red:#dc2626;--green:#16a34a;--blue:#2563eb;
+    }
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    .container{max-width:680px;margin:0 auto;padding:0 20px}
+    
+    /* Urgency */
+    .urgency{background:var(--red);color:#fff;text-align:center;padding:12px;font-size:14px;font-weight:600}
+    .urgency a{color:#fff;margin-left:8px}
+    
+    /* Header */
+    header{padding:16px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:100}
+    header .container{display:flex;justify-content:space-between;align-items:center}
+    .logo{font-weight:800;font-size:18px;color:var(--blue)}
+    
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:14px 28px;border-radius:8px;font-weight:600;font-size:15px;
+      text-decoration:none;border:none;cursor:pointer;transition:.2s;
+    }
+    .btn-red{background:var(--red);color:#fff}
+    .btn-red:hover{background:#b91c1c}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-green:hover{background:#15803d}
+    .btn-blue{background:var(--blue);color:#fff}
+    .btn-blue:hover{background:#1d4ed8}
+    .btn-outline{background:#fff;color:var(--text);border:2px solid var(--border)}
+    .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+    .btn-sm{padding:10px 18px;font-size:14px}
+    
+    /* Hero */
+    .hero{padding:60px 0 40px;text-align:center}
+    .badge{
+      display:inline-block;padding:6px 14px;background:var(--surface);
+      border:1px solid var(--border);border-radius:100px;font-size:13px;
+      color:var(--muted);margin-bottom:20px;
+    }
+    .badge b{color:var(--green)}
+    h1{font-size:clamp(32px,5vw,48px);font-weight:800;line-height:1.15;margin-bottom:16px}
+    h1 span{color:var(--blue)}
+    .hero>p{font-size:18px;color:var(--muted);margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto}
+    .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    
+    /* Trust */
+    .trust{display:flex;justify-content:center;gap:24px;margin-top:32px;flex-wrap:wrap}
+    .trust-item{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+    .trust-item svg{width:20px;height:20px}
+    .check{color:var(--green)}
+    
+    /* Stats */
+    .stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+      background:var(--border);border:1px solid var(--border);border-radius:12px;
+      overflow:hidden;margin:48px 0;
+    }
+    .stat{background:#fff;padding:24px;text-align:center}
+    .stat-value{font-size:36px;font-weight:800;color:var(--blue)}
+    .stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+    
+    /* Section */
+    section{padding:48px 0}
+    h2{font-size:28px;font-weight:800;margin-bottom:8px;text-align:center}
+    .section-sub{color:var(--muted);text-align:center;margin-bottom:32px}
+    
+    /* Cards */
+    .cards{display:grid;gap:16px}
+    .card{
+      background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:24px;display:flex;gap:16px;align-items:flex-start;
+    }
+    .card-icon{
+      width:48px;height:48px;border-radius:10px;background:#fff;border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;
+    }
+    .card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+    .card p{font-size:14px;color:var(--muted)}
+    
+    /* Comparison */
+    .comparison{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:32px 0;
+    }
+    .compare-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px}
+    .compare-box h4{font-size:14px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .compare-box ul{list-style:none;font-size:14px;color:var(--muted)}
+    .compare-box ul li{padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+    .compare-box ul li:last-child{border:none}
+    .compare-box.bad{border-color:#fecaca;background:#fef2f2}
+    .compare-box.bad h4{color:var(--red)}
+    .compare-box.good{border-color:#bbf7d0;background:#f0fdf4}
+    .compare-box.good h4{color:var(--green)}
+    
+    /* Testimonials */
+    .testimonial{
+      background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:24px;margin:24px 0;
+    }
+    .testimonial p{font-size:16px;font-style:italic;margin-bottom:16px}
+    .testimonial-author{display:flex;align-items:center;gap:12px}
+    .testimonial-avatar{
+      width:44px;height:44px;background:var(--blue);border-radius:50%;color:#fff;
+      display:flex;align-items:center;justify-content:center;font-weight:700;
+    }
+    .testimonial-name{font-weight:600;font-size:14px}
+    .testimonial-role{font-size:13px;color:var(--muted)}
+    
+    /* Pricing */
+    .pricing{
+      background:var(--surface);border:2px solid var(--blue);border-radius:16px;
+      padding:32px;text-align:center;max-width:400px;margin:32px auto;
+    }
+    .pricing h3{font-size:18px;margin-bottom:16px}
+    .price{font-size:48px;font-weight:800;color:var(--blue)}
+    .price span{font-size:18px;color:var(--muted);font-weight:400}
+    .price-note{font-size:14px;color:var(--green);margin:8px 0 20px}
+    .pricing ul{list-style:none;text-align:left;margin:20px 0}
+    .pricing li{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;display:flex;align-items:center;gap:10px}
+    .pricing li:last-child{border:none}
+    .pricing li::before{content:'✓';color:var(--green);font-weight:bold}
+    
+    /* Form */
+    .form-section{
+      background:var(--surface);border:1px solid var(--border);border-radius:16px;
+      padding:32px;margin:48px 0;
+    }
+    .form-section h2{margin-bottom:8px}
+    .form-section>p{text-align:center;color:var(--muted);margin-bottom:24px}
+    form{max-width:400px;margin:0 auto}
+    label{font-size:13px;color:var(--muted);margin-bottom:4px;display:block}
+    input,select{
+      width:100%;padding:14px;background:#fff;border:1px solid var(--border);
+      border-radius:8px;font-size:15px;margin-bottom:12px;
+    }
+    input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-footer{margin-top:8px}
+    .form-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
+    
+    /* Footer */
+    footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;color:var(--muted);font-size:13px}
+    footer a{color:var(--blue);text-decoration:none}
+    
+    /* WhatsApp */
+    .whatsapp{
+      position:fixed;bottom:20px;right:20px;
+      background:var(--green);color:#fff;padding:14px 20px;border-radius:50px;
+      text-decoration:none;font-weight:600;font-size:14px;
+      box-shadow:0 4px 12px rgba(22,163,74,.3);display:flex;align-items:center;gap:8px;
+    }
+    .whatsapp:hover{background:#15803d}
+    
+    /* Mobile */
+    @media(max-width:600px){
+      .stats{grid-template-columns:1fr}
+      .comparison{grid-template-columns:1fr}
+      .form-row{grid-template-columns:1fr}
+      .hero-cta{flex-direction:column}
+      .hero-cta .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Urgency -->
+  <div class="urgency">
+    🎓 Rentrée 2025 — <b>Places limitées à 60 étudiants</b>
+    <a href="#form">→ Vérifier mon éligibilité</a>
+  </div>
+  
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">UM6SS</div>
+      <div style="display:flex;gap:8px">
+        <a href="https://wa.me/212600000000" class="btn btn-green btn-sm">💬 WhatsApp</a>
+        <a href="#form" class="btn btn-blue btn-sm">Brochure</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="badge">Formation <b>5 ans</b> • Admission sur dossier</div>
+      <h1>Deviens <span>Ingénieur</span><br>dans les industries de la santé</h1>
+      <p>Génie en Technologie Médicale & Industrie Pharmaceutique — 100% orienté terrain et employabilité.</p>
+      <div class="hero-cta">
+        <a href="#form" class="btn btn-red">Télécharger la brochure →</a>
+        <a href="https://wa.me/212600000000" class="btn btn-outline">💬 Parler à un conseiller</a>
+      </div>
+      <div class="trust">
+        <div class="trust-item"><span class="check">✓</span> 100% pratique</div>
+        <div class="trust-item"><span class="check">✓</span> +50 équipements réels</div>
+        <div class="trust-item"><span class="check">✓</span> Réponse &lt;24h</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="stat-value">60</div><div class="stat-label">Places/an</div></div>
+      <div class="stat"><div class="stat-value">3×</div><div class="stat-label">Plus de pratique</div></div>
+      <div class="stat"><div class="stat-value">7</div><div class="stat-label">Campus</div></div>
+    </div>
+  </div>
+
+  <!-- Problem -->
+  <section>
+    <div class="container">
+      <h2>Pourquoi cette filière ?</h2>
+      <p class="section-sub">La santé recrute, mais manque d'ingénieurs terrain.</p>
+      
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <div><h3>Production & Procédés</h3><p>Piloter les procédés industriels pharma et cosmétique.</p></div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔧</div>
+          <div><h3>Maintenance biomédicale</h3><p>Assurer la disponibilité des équipements hospitaliers.</p></div>
+        </div>
+        <div class="card">
+          <div class="card-icon">✓</div>
+          <div><h3>Qualité & Validation</h3><p>Contrôle qualité dans des secteurs réglementés.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="container">
+      <h2>Ingénieur vs Technicien</h2>
+      <p class="section-sub">Pourquoi viser le niveau ingénieur ?</p>
+      
+      <div class="comparison">
+        <div class="compare-box bad">
+          <h4>❌ Technicien</h4>
+          <ul>
+            <li>Exécute des procédures</li>
+            <li>Suit les instructions</li>
+            <li>Salaire plafonné</li>
+            <li>Évolution limitée</li>
+          </ul>
+        </div>
+        <div class="compare-box good">
+          <h4>✓ Ingénieur</h4>
+          <ul>
+            <li>Conçoit et pilote</li>
+            <li>Prend des décisions</li>
+            <li>Salaire 2-3× supérieur</li>
+            <li>Évolue vers le management</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section>
+    <div class="container">
+      <h2>Ce qu'ils en disent</h2>
+      
+      <div class="testimonial">
+        <p>"Une formation qui prépare vraiment au terrain. J'ai trouvé un emploi 2 mois avant la fin de mes études."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">A</div>
+          <div>
+            <div class="testimonial-name">Amine R.</div>
+            <div class="testimonial-role">Diplômé 2024, Ingénieur chez Pharma5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section>
+    <div class="container">
+      <h2>Investissement</h2>
+      
+      <div class="pricing">
+        <h3>Cycle Ingénieur — 5 ans</h3>
+        <div class="price">55 000 <span>DH/an</span></div>
+        <div class="price-note">✓ Paiement mensuel possible</div>
+        <ul>
+          <li>Cours & travaux pratiques</li>
+          <li>Accès aux équipements</li>
+          <li>Stages en entreprise</li>
+          <li>Accompagnement personnalisé</li>
+        </ul>
+        <a href="#form" class="btn btn-blue" style="width:100%">Je candidate →</a>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px">Bourses disponibles selon dossier</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="form-section" id="form">
+    <div class="container">
+      <h2>Reçois la brochure</h2>
+      <p>Programme, dates, admission — tout en 1 document.</p>
+      
+      <form action="#" method="post">
+        <div class="form-row">
+          <div><label>Prénom</label><input type="text" name="prenom" placeholder="Sara" required></div>
+          <div><label>Nom</label><input type="text" name="nom" placeholder="El Amrani" required></div>
+        </div>
+        <label>Email</label>
+        <input type="email" name="email" placeholder="exemple@email.com" required>
+        <label>Téléphone (WhatsApp)</label>
+        <input type="tel" name="tel" placeholder="+212 6XX XXX XXX">
+        <label>Niveau actuel</label>
+        <select name="niveau" required>
+          <option value="" disabled selected>Choisir...</option>
+          <option>Post-bac</option>
+          <option>Bac+1</option>
+          <option>Bac+2</option>
+        </select>
+        <div class="form-footer">
+          <button type="submit" class="btn btn-red" style="width:100%">Envoyer →</button>
+        </div>
+        <p class="form-note">Réponse garantie sous 24h</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p><strong>UM6SS</strong> — Collège d'Ingénierie</p>
+      <p style="margin-top:8px">
+        <a href="tel:+212600000000">+212 6XX XX XX XX</a> • 
+        <a href="mailto:contact@um6ss.ma">contact@um6ss.ma</a>
+      </p>
+      <p style="margin-top:16px">© 2025 UM6SS. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/212600000000" class="whatsapp">💬 WhatsApp</a>
+
+</body>
+</html>
